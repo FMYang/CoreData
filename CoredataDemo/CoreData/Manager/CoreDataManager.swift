@@ -12,13 +12,34 @@ import CoreData
 class CoreDataManager: NSObject {
 
     // MARK: - 单例
-    private static let instance: CoreDataManager = CoreDataManager()
-    static let share: CoreDataManager = {
-        let instance = CoreDataManager()
-        return instance
+    static let share: CoreDataManager = CoreDataManager()
+    static let queue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 3
+        queue.name = "com.yfm.coredata.queue"
+        return queue
     }()
+    private override init() {
+        super.init()
+
+        // 其他线程调用save的时候触发NSManagedObjectContextObjectsDidChange这个通知
+        // 合并其他线程上下文的改变到主线程上下文
+//        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextObjectsDidChange,
+//                                               object: nil,
+//                                               queue: nil) { (info) in
+//                                                print("had received save notification")
+//                                                let mainContext = self.mainThreadContext
+//                                                let otherContext = info.object as? NSManagedObjectContext
+//                                                if let context = otherContext, context != mainContext {
+//                                                    mainContext.perform({
+//                                                        mainContext.mergeChanges(fromContextDidSave: info)
+//                                                    })
+//                                                }
+//        }
+    }
 
     // MARK: - Core Data stack
+    @available(iOS 10.0, *)
     lazy var persistentContainer: NSPersistentContainer = {
         // 创建持久化存储容器（即创建Core Data数据库）
         let container = NSPersistentContainer(name: "CoredataDemo")
@@ -28,15 +49,25 @@ class CoreDataManager: NSObject {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.undoManager = nil
         return container
     }()
 
-    // 获取上下文对象
+    // 获取持久化存储协调器
+    @available(iOS 10.0, *)
+    lazy var mainPersistentStoreCoordinator: NSPersistentStoreCoordinator = {
+        return persistentContainer.persistentStoreCoordinator
+    }()
+
+    // 获取主线程上下文对象
+    @available(iOS 10.0, *)
     lazy var mainThreadContext: NSManagedObjectContext = {
         return persistentContainer.viewContext
     }()
 
     // MARK: - 保存
+    @available(iOS 10.0, *)
     func saveContext () {
         let context = mainThreadContext
         if context.hasChanges {
@@ -48,4 +79,19 @@ class CoreDataManager: NSObject {
             }
         }
     }
+
+    // 创建私有上下文
+    func newPrivateContext() -> NSManagedObjectContext {
+        /*
+         iOS 10 之前
+         */
+//        let privateContext = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
+//        privateContext.persistentStoreCoordinator = self.persistentContainer
+//        return privateContext
+        /*
+         iOS 10 之后
+         */
+        return self.persistentContainer.newBackgroundContext()
+    }
+    
 }

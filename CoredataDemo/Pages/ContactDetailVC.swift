@@ -8,6 +8,12 @@
 
 import UIKit
 import CoreData
+
+enum OperationType {
+    case add
+    case edit
+}
+
 class ContactDetailVC: UIViewController {
 
     @IBOutlet weak var finishButton: UIButton!
@@ -18,6 +24,8 @@ class ContactDetailVC: UIViewController {
     @IBOutlet weak var telTextfield: UITextField!
 
     var acontact: ContactMO?
+
+    var atype: OperationType = .add
 
     convenience init(contact: ContactMO) {
         self.init()
@@ -53,13 +61,47 @@ class ContactDetailVC: UIViewController {
         telTextfield.layer.borderColor = UIColor.clear.cgColor
 
         // 插入
-        let context = CoreDataManager.share.mainThreadContext
-        let object: ContactMO = context.insertObject()
-        object.firstName = firstNameTextfield.text
-        object.lastName = lastNameTextfield.text
-        object.company = companyTextfield.text
-        object.tel = telTextfield.text
-        context.saveOrRollback()
+        let firstName = firstNameTextfield.text
+        let lastName = lastNameTextfield.text
+        let company = companyTextfield.text
+        let tel = telTextfield.text
+
+        switch atype {
+        case .add:
+                let task = TaskOperation()
+                task.taskBlock = { context in
+                    for _ in 0...10000 {
+                        let object: ContactMO = context.insertObject()
+                        object.firstName = firstName
+                        object.lastName = lastName
+                        object.company = company
+                        object.tel = tel
+                    }
+                }
+                CoreDataManager.queue.addOperation(task)
+
+//            DispatchQueue.global().async {
+//                let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+////                context.persistentStoreCoordinator = CoreDataManager.share.mainPersistentStoreCoordinator
+//                let object: ContactMO = context.insertObject()
+//                object.firstName = firstName
+//                object.lastName = lastName
+//                object.company = company
+//                object.tel = tel
+//                context.saveOrRollback()
+//            }
+        case .edit:
+            DispatchQueue.global().async {
+                let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+                self.acontact!.firstName = firstName
+                self.acontact!.lastName = lastName
+                self.acontact!.company = company
+                self.acontact!.tel = tel
+                context.saveOrRollback()
+                CoreDataManager.share.mainThreadContext.saveOrRollback()
+            }
+        }
+
 
         self.dismiss(animated: true, completion: nil)
     }

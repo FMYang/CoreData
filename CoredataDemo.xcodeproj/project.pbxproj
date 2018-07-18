@@ -19,6 +19,7 @@
 		363405C820F45F0200F19075 /* ContactDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 363405C620F45F0200F19075 /* ContactDetailVC.xib */; };
 		363405CB20F464F900F19075 /* ContactMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363405C920F464F900F19075 /* ContactMO+CoreDataClass.swift */; };
 		363405CC20F464F900F19075 /* ContactMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363405CA20F464F900F19075 /* ContactMO+CoreDataProperties.swift */; };
+		367C645220FF0F1300C81F92 /* TaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367C645120FF0F1300C81F92 /* TaskOperation.swift */; };
 		3682131620F6098500B508FA /* NSManagedObjectContext+Extend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682131520F6098500B508FA /* NSManagedObjectContext+Extend.swift */; };
 		3682131820F60A6800B508FA /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682131720F60A6800B508FA /* NSManagedObject.swift */; };
 		3682131A20F60ADF00B508FA /* Managed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682131920F60ADF00B508FA /* Managed.swift */; };
@@ -38,6 +39,7 @@
 		363405C620F45F0200F19075 /* ContactDetailVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactDetailVC.xib; sourceTree = "<group>"; };
 		363405C920F464F900F19075 /* ContactMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		363405CA20F464F900F19075 /* ContactMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		367C645120FF0F1300C81F92 /* TaskOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskOperation.swift; sourceTree = "<group>"; };
 		3682131520F6098500B508FA /* NSManagedObjectContext+Extend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extend.swift"; sourceTree = "<group>"; };
 		3682131720F60A6800B508FA /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		3682131920F60ADF00B508FA /* Managed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Managed.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				3682131520F6098500B508FA /* NSManagedObjectContext+Extend.swift */,
 				3682131720F60A6800B508FA /* NSManagedObject.swift */,
 				3682131920F60ADF00B508FA /* Managed.swift */,
+				367C645120FF0F1300C81F92 /* TaskOperation.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -214,6 +217,7 @@
 				363405C720F45F0200F19075 /* ContactDetailVC.swift in Sources */,
 				363405C220F3666700F19075 /* CoreDataManager.swift in Sources */,
 				363405CC20F464F900F19075 /* ContactMO+CoreDataProperties.swift in Sources */,
+				367C645220FF0F1300C81F92 /* TaskOperation.swift in Sources */,
 				3682131A20F60ADF00B508FA /* Managed.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,6 +365,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 464SP5UW8T;
 				INFOPLIST_FILE = "$(SRCROOT)/CoredataDemo/SupporttingFiles/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -379,6 +384,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 464SP5UW8T;
 				INFOPLIST_FILE = "$(SRCROOT)/CoredataDemo/SupporttingFiles/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

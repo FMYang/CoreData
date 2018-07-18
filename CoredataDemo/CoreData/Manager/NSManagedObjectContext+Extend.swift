@@ -12,29 +12,44 @@ import CoreData
 extension NSManagedObjectContext {
     // 插入
     final func insertObject<T: NSManagedObject>() -> T where T: Managed {
-        guard let obj = (NSEntityDescription.insertNewObject(forEntityName: T.entityName, into: self) as? T) else {
-            fatalError("wrong object type")
+        guard let obj = NSEntityDescription.insertNewObject(forEntityName: T.entityName, into: self) as? T else {
+            fatalError("insert error")
         }
         return obj
     }
 
     // 查询
-    func fetchObjects<T: NSManagedObject>() -> [T] where T: Managed {
-        let request = NSFetchRequest<T>(entityName: T.entityName)
+    func fetchObjects(entityName: String) -> [ContactMO] {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         do {
             let objects = try self.fetch(request)
-            return objects
+            return objects as! [ContactMO]
         } catch {
             fatalError("fetch error")
         }
     }
 
-    // 保存
-    public func saveOrRollback() {
+    // 删除所有
+    @available(iOS 9.0, *)
+    func deleteAll(entityName: String) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let delete = NSBatchDeleteRequest(fetchRequest: request)
+
         do {
-            try save()
+            try self.persistentStoreCoordinator?.execute(delete, with: self)
         } catch {
-            rollback()
+            fatalError("delete error")
+        }
+    }
+
+    // 保存或者回滚
+    public func saveOrRollback() {
+        self.performAndWait {
+            do {
+                try self.save()
+            } catch {
+                self.rollback()
+            }
         }
     }
 }
