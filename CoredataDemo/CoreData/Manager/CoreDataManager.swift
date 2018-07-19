@@ -13,29 +13,23 @@ class CoreDataManager: NSObject {
 
     // MARK: - 单例
     static let share: CoreDataManager = CoreDataManager()
-    static let queue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 3
-        queue.name = "com.yfm.coredata.queue"
-        return queue
-    }()
+    static let queue: DispatchQueue = DispatchQueue(label: "CoreDataQueue")
     private override init() {
         super.init()
-
         // 其他线程调用save的时候触发NSManagedObjectContextObjectsDidChange这个通知
         // 合并其他线程上下文的改变到主线程上下文
-//        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextObjectsDidChange,
-//                                               object: nil,
-//                                               queue: nil) { (info) in
-//                                                print("had received save notification")
-//                                                let mainContext = self.mainThreadContext
-//                                                let otherContext = info.object as? NSManagedObjectContext
-//                                                if let context = otherContext, context != mainContext {
-//                                                    mainContext.perform({
-//                                                        mainContext.mergeChanges(fromContextDidSave: info)
-//                                                    })
-//                                                }
-//        }
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextObjectsDidChange,
+                                               object: nil,
+                                               queue: nil) { (info) in
+                                                print("had received save notification")
+                                                let mainContext = self.mainThreadContext
+                                                let otherContext = info.object as? NSManagedObjectContext
+                                                if let context = otherContext, context != mainContext {
+                                                    mainContext.perform({
+                                                        mainContext.mergeChanges(fromContextDidSave: info)
+                                                    })
+                                                }
+        }
     }
 
     // MARK: - Core Data stack
@@ -71,27 +65,22 @@ class CoreDataManager: NSObject {
     func saveContext () {
         let context = mainThreadContext
         if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            context.perform {
+                do {
+                    try context.save()
+                } catch {
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                }
             }
         }
     }
 
     // 创建私有上下文
     func newPrivateContext() -> NSManagedObjectContext {
-        /*
-         iOS 10 之前
-         */
-//        let privateContext = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
-//        privateContext.persistentStoreCoordinator = self.persistentContainer
-//        return privateContext
-        /*
-         iOS 10 之后
-         */
-        return self.persistentContainer.newBackgroundContext()
+        let privateContext = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
+        privateContext.persistentStoreCoordinator = self.mainPersistentStoreCoordinator
+        privateContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy // 内存优先
+        return privateContext
     }
-    
 }

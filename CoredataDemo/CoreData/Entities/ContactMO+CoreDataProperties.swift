@@ -13,9 +13,9 @@ import CoreData
 
 extension ContactMO: Managed {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<ContactMO> {
-        return NSFetchRequest<ContactMO>(entityName: "Contact")
-    }
+//    @nonobjc public class func fetchRequest() -> NSFetchRequest<ContactMO> {
+//        return NSFetchRequest<ContactMO>(entityName: "Contact")
+//    }
 
     @NSManaged public var firstName: String?
     @NSManaged public var lastName: String?

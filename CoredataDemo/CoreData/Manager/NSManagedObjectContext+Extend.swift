@@ -11,8 +11,8 @@ import CoreData
 
 extension NSManagedObjectContext {
     // 插入
-    final func insertObject<T: NSManagedObject>() -> T where T: Managed {
-        guard let obj = NSEntityDescription.insertNewObject(forEntityName: T.entityName, into: self) as? T else {
+    func insertObject<T: NSManagedObject>() -> T where T: Managed {
+        guard let obj = NSEntityDescription.insertNewObject(forEntityName: T.customEntityName, into: self) as? T else {
             fatalError("insert error")
         }
         return obj

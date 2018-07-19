@@ -30,47 +30,32 @@ class RootViewController: UIViewController {
 
         self.view.addSubview(tableView)
 
-//        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextObjectsDidChange,
-//                                               object: nil,
-//                                               queue: nil) { (info) in
-//                                                print("had received save notification")
-//                                                let mainContext = CoreDataManager.share.mainThreadContext
-//                                                let otherContext = info.object as? NSManagedObjectContext
-//                                                if let context = otherContext, context != mainContext {
-//                                                    mainContext.perform({
-//                                                        mainContext.mergeChanges(fromContextDidSave: info)
-//                                                    })
-//                                                }
-//                                                let datas = mainContext.fetchObjects(entityName: "Contact")
-//                                                self.data = datas
-//                                                self.tableView.reloadData()
-//        }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        // 查询
-//        DispatchQueue.global().async {
-//            let context = CoreDataManager.share.persistentContainer.newBackgroundContext()
-//            let datas = context.fetchObjects(entityName: "Contact")
-//            print("background thread " + (datas[0].firstName ?? ""))
-//            // 你也可以在上 下文之间直接传递对象本身，但是要注意在其他上下文所处的队列上你只能访问和使用 这些对象的 obejctID
-//            DispatchQueue.main.async {
-//                print("main thread " + (datas[0].firstName ?? ""))
-//                let context = CoreDataManager.share.mainThreadContext
-//                for data in datas {
-//                    let object = context.object(with: data.objectID) as! ContactMO
-//                    self.data.append(object)
-//                }
-//                self.tableView.reloadData()
-//            }
-//        }
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
+                                               object: nil,
+                                               queue: nil) { (info) in
+                                                print(Thread.current, Thread.isMainThread)
+                                                DispatchQueue.main.async {
+                                                    // 在主线程上下文查询对象
+                                                    let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
+                                                    self.data = datas
+                                                    self.tableView.reloadData()
+                                                }
+        }
 
         let context = CoreDataManager.share.mainThreadContext
         let datas = context.fetchObjects(entityName: "Contact")
         self.data = datas
         self.tableView.reloadData()
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+//        let context = CoreDataManager.share.mainThreadContext
+//        let datas = context.fetchObjects(entityName: "Contact")
+//        self.data = datas
+//        self.tableView.reloadData()
 //        context.deleteAll(entityName: "Contact")
     }
 

@@ -68,28 +68,15 @@ class ContactDetailVC: UIViewController {
 
         switch atype {
         case .add:
-                let task = TaskOperation()
-                task.taskBlock = { context in
-                    for _ in 0...10000 {
-                        let object: ContactMO = context.insertObject()
-                        object.firstName = firstName
-                        object.lastName = lastName
-                        object.company = company
-                        object.tel = tel
-                    }
-                }
-                CoreDataManager.queue.addOperation(task)
-
-//            DispatchQueue.global().async {
-//                let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-////                context.persistentStoreCoordinator = CoreDataManager.share.mainPersistentStoreCoordinator
-//                let object: ContactMO = context.insertObject()
-//                object.firstName = firstName
-//                object.lastName = lastName
-//                object.company = company
-//                object.tel = tel
-//                context.saveOrRollback()
-//            }
+            CoreDataManager.queue.async {
+                let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+                object.firstName = firstName
+                object.lastName = lastName
+                object.company = company
+                object.tel = tel
+                CoredataActions.insertObjectOnCurrentThread(object: object)
+                CoredataActions.saveOnCurrentThread()
+            }
         case .edit:
             DispatchQueue.global().async {
                 let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)

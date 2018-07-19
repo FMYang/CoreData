@@ -20,8 +20,8 @@
 		363405CB20F464F900F19075 /* ContactMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363405C920F464F900F19075 /* ContactMO+CoreDataClass.swift */; };
 		363405CC20F464F900F19075 /* ContactMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363405CA20F464F900F19075 /* ContactMO+CoreDataProperties.swift */; };
 		367C645220FF0F1300C81F92 /* TaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367C645120FF0F1300C81F92 /* TaskOperation.swift */; };
+		367C645421002B9700C81F92 /* CoredataActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367C645321002B9700C81F92 /* CoredataActions.swift */; };
 		3682131620F6098500B508FA /* NSManagedObjectContext+Extend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682131520F6098500B508FA /* NSManagedObjectContext+Extend.swift */; };
-		3682131820F60A6800B508FA /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682131720F60A6800B508FA /* NSManagedObject.swift */; };
 		3682131A20F60ADF00B508FA /* Managed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682131920F60ADF00B508FA /* Managed.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,8 +40,8 @@
 		363405C920F464F900F19075 /* ContactMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		363405CA20F464F900F19075 /* ContactMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		367C645120FF0F1300C81F92 /* TaskOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskOperation.swift; sourceTree = "<group>"; };
+		367C645321002B9700C81F92 /* CoredataActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoredataActions.swift; sourceTree = "<group>"; };
 		3682131520F6098500B508FA /* NSManagedObjectContext+Extend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extend.swift"; sourceTree = "<group>"; };
-		3682131720F60A6800B508FA /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		3682131920F60ADF00B508FA /* Managed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Managed.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,9 +128,9 @@
 			children = (
 				363405C120F3666700F19075 /* CoreDataManager.swift */,
 				3682131520F6098500B508FA /* NSManagedObjectContext+Extend.swift */,
-				3682131720F60A6800B508FA /* NSManagedObject.swift */,
 				3682131920F60ADF00B508FA /* Managed.swift */,
 				367C645120FF0F1300C81F92 /* TaskOperation.swift */,
+				367C645321002B9700C81F92 /* CoredataActions.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -212,10 +212,10 @@
 				3682131620F6098500B508FA /* NSManagedObjectContext+Extend.swift in Sources */,
 				363405C420F45C0A00F19075 /* RootViewController.swift in Sources */,
 				363405CB20F464F900F19075 /* ContactMO+CoreDataClass.swift in Sources */,
-				3682131820F60A6800B508FA /* NSManagedObject.swift in Sources */,
 				3634057420F359F100F19075 /* CoredataDemo.xcdatamodeld in Sources */,
 				363405C720F45F0200F19075 /* ContactDetailVC.swift in Sources */,
 				363405C220F3666700F19075 /* CoreDataManager.swift in Sources */,
+				367C645421002B9700C81F92 /* CoredataActions.swift in Sources */,
 				363405CC20F464F900F19075 /* ContactMO+CoreDataProperties.swift in Sources */,
 				367C645220FF0F1300C81F92 /* TaskOperation.swift in Sources */,
 				3682131A20F60ADF00B508FA /* Managed.swift in Sources */,
