@@ -9,26 +9,25 @@
 import UIKit
 import CoreData
 
-class CoreDataManager: NSObject {
+class CoreDataManager {
 
     // MARK: - 单例
     static let share: CoreDataManager = CoreDataManager()
     static let queue: DispatchQueue = DispatchQueue(label: "CoreDataQueue")
-    private override init() {
-        super.init()
-        // 其他线程调用save的时候触发NSManagedObjectContextObjectsDidChange这个通知
-        // 合并其他线程上下文的改变到主线程上下文
-        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextObjectsDidChange,
+    private init() {
+        // 上下文调用save的时候触发NSManagedObjectContextObjectsDidChange这个通知
+        // 合并其他线程上下文的改变到当前上下文
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
                                                object: nil,
-                                               queue: nil) { (info) in
-                                                print("had received save notification")
-                                                let mainContext = self.mainThreadContext
-                                                let otherContext = info.object as? NSManagedObjectContext
-                                                if let context = otherContext, context != mainContext {
-                                                    mainContext.perform({
-                                                        mainContext.mergeChanges(fromContextDidSave: info)
-                                                    })
-                                                }
+                                               queue: nil) { (notification) in
+                                                print("private contexts: \(CoredataActions.share.contexts)")
+                                                print("had received save notification from \(Thread.current), current context: \(CoredataActions.currentContext())")
+                                                print(notification.userInfo!)
+                                                let currentSaveContext = notification.object as? NSManagedObjectContext
+//                                                if !Thread.isMainThread {
+                                                    print("=================mergeChanges==============\(Thread.current)")
+                                                    currentSaveContext?.mergeChanges(fromContextDidSave: notification)
+//                                                }
         }
     }
 
@@ -43,7 +42,7 @@ class CoreDataManager: NSObject {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.mergePolicy = NSOverwriteMergePolicy//NSMergeByPropertyObjectTrumpMergePolicy // 内存优先
         container.viewContext.undoManager = nil
         return container
     }()
@@ -80,7 +79,7 @@ class CoreDataManager: NSObject {
     func newPrivateContext() -> NSManagedObjectContext {
         let privateContext = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
         privateContext.persistentStoreCoordinator = self.mainPersistentStoreCoordinator
-        privateContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy // 内存优先
+        privateContext.mergePolicy = NSOverwriteMergePolicy // 内存优先
         return privateContext
     }
 }

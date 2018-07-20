@@ -13,7 +13,7 @@
 		3634057320F359F100F19075 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3634056920F359F100F19075 /* Info.plist */; };
 		3634057420F359F100F19075 /* CoredataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3634056B20F359F100F19075 /* CoredataDemo.xcdatamodeld */; };
 		3634057620F359F100F19075 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634056F20F359F100F19075 /* AppDelegate.swift */; };
-		363405C220F3666700F19075 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363405C120F3666700F19075 /* CoreDataManager.swift */; };
+		363405C220F3666700F19075 /*  CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363405C120F3666700F19075 /*  CoreDataManager.swift */; };
 		363405C420F45C0A00F19075 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363405C320F45C0A00F19075 /* RootViewController.swift */; };
 		363405C720F45F0200F19075 /* ContactDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363405C520F45F0200F19075 /* ContactDetailVC.swift */; };
 		363405C820F45F0200F19075 /* ContactDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 363405C620F45F0200F19075 /* ContactDetailVC.xib */; };
@@ -33,7 +33,7 @@
 		3634056920F359F100F19075 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3634056C20F359F100F19075 /* CoredataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoredataDemo.xcdatamodel; sourceTree = "<group>"; };
 		3634056F20F359F100F19075 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		363405C120F3666700F19075 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		363405C120F3666700F19075 /*  CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " CoreDataManager.swift"; sourceTree = "<group>"; };
 		363405C320F45C0A00F19075 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		363405C520F45F0200F19075 /* ContactDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailVC.swift; sourceTree = "<group>"; };
 		363405C620F45F0200F19075 /* ContactDetailVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactDetailVC.xib; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 		363405C020F3662A00F19075 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				363405C120F3666700F19075 /* CoreDataManager.swift */,
+				363405C120F3666700F19075 /*  CoreDataManager.swift */,
 				3682131520F6098500B508FA /* NSManagedObjectContext+Extend.swift */,
 				3682131920F60ADF00B508FA /* Managed.swift */,
 				367C645120FF0F1300C81F92 /* TaskOperation.swift */,
@@ -214,7 +214,7 @@
 				363405CB20F464F900F19075 /* ContactMO+CoreDataClass.swift in Sources */,
 				3634057420F359F100F19075 /* CoredataDemo.xcdatamodeld in Sources */,
 				363405C720F45F0200F19075 /* ContactDetailVC.swift in Sources */,
-				363405C220F3666700F19075 /* CoreDataManager.swift in Sources */,
+				363405C220F3666700F19075 /*  CoreDataManager.swift in Sources */,
 				367C645421002B9700C81F92 /* CoredataActions.swift in Sources */,
 				363405CC20F464F900F19075 /* ContactMO+CoreDataProperties.swift in Sources */,
 				367C645220FF0F1300C81F92 /* TaskOperation.swift in Sources */,

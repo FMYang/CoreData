@@ -78,15 +78,33 @@ class ContactDetailVC: UIViewController {
                 CoredataActions.saveOnCurrentThread()
             }
         case .edit:
-            DispatchQueue.global().async {
-                let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-                self.acontact!.firstName = firstName
-                self.acontact!.lastName = lastName
-                self.acontact!.company = company
-                self.acontact!.tel = tel
-                context.saveOrRollback()
-                CoreDataManager.share.mainThreadContext.saveOrRollback()
+
+            // 主线程上下文修改对象为的firstname为liu
+            let context = CoreDataManager.share.mainThreadContext
+            let datas = context.fetchObjects(entityName: "Contact")
+            if datas.count > 0 {
+                let contact1 = datas[0]
+                contact1.firstName = "liu"
+            } else {
+                print("main context not found contact")
             }
+
+            DispatchQueue.global().async {
+                // 子线程上下文修改对象的firstname为yang
+                let datas = CoredataActions.currentContext().fetchObjects(entityName: "Contact")
+                if datas.count > 0 {
+                    let contact2 = datas[0]
+                    contact2.firstName = "yang"
+                } else {
+                    print("private context not found contact")
+                }
+
+                // 保存子线程上下文的变更
+                CoredataActions.saveOnCurrentThread()
+            }
+
+            // 保存主线程上下文的变更
+            CoredataActions.saveOnMainThread()
         }
 
 

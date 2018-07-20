@@ -9,9 +9,14 @@
 import Foundation
 import CoreData
 
-let kNSManagedObjectContextKey = "kNSManagedObjectContextKey"
+let kThreadNSManagedObjectContextKey = "kThreadNSManagedObjectContextKey"
 
 class CoredataActions {
+
+    static let share: CoredataActions = CoredataActions()
+    private init() {}
+
+    var contexts: [NSManagedObjectContext] = []
 
     // 获取当前上下文
     static func currentContext() -> NSManagedObjectContext {
@@ -19,10 +24,11 @@ class CoredataActions {
             return CoreDataManager.share.mainThreadContext
         } else {
             let dic = Thread.current.threadDictionary
-            var threadContext = dic[kNSManagedObjectContextKey] as? NSManagedObjectContext
+            var threadContext = dic[kThreadNSManagedObjectContextKey] as? NSManagedObjectContext
             if threadContext == nil {
                 threadContext = CoreDataManager.share.newPrivateContext()
-                dic[kNSManagedObjectContextKey] = threadContext
+                dic[kThreadNSManagedObjectContextKey] = threadContext
+                self.share.contexts.append(threadContext!)
             }
             return threadContext!
         }
@@ -56,16 +62,28 @@ class CoredataActions {
         self.currentContext().insert(object)
     }
 
-    // 上下文的合并会触发NSManagedObjectContextObjectsDidChange通知
+    // 上下文save会触发NSManagedObjectContextObjectsDidChange通知
+    // 主线程上下文注册通知来合并子线程的变更
     static func saveOnCurrentThread() {
+        print("saveOnCurrentThread: \(Thread.current)")
         if self.currentContext().hasChanges {
-            self.currentContext().perform {
+            self.currentContext().performAndWait {
                 do {
                     try self.currentContext().save()
+                    if Thread.isMainThread {
+                        print("main thread save success!")
+                    } else {
+                        print("private thread save success!")
+                    }
                 } catch {
-                    fatalError("save thread context exception")
+                    let err = error as NSError
+                    print(err.userInfo)
+                    fatalError("save \(Thread.current) context exception, error: \(error)")
+
                 }
             }
+        } else {
+            print("current context wihtout change")
         }
     }
 }
