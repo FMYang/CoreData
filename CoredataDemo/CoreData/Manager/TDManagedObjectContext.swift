@@ -23,10 +23,10 @@ class TDManagedObjectContext: NSManagedObjectContext {
             isContextOnMainThread = true
         }
 
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(mergeChangesNotification(notification:)),
-//                                               name: Notification.Name.NSManagedObjectContextDidSave,
-//                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(mergeChangesNotification(notification:)),
+                                               name: Notification.Name.NSManagedObjectContextDidSave,
+                                               object: nil)
     }
 
     /*
@@ -34,7 +34,8 @@ class TDManagedObjectContext: NSManagedObjectContext {
      */
     @objc func mergeChangesNotification(notification: Notification) {
         if let saveContext = notification.object as? NSManagedObjectContext, saveContext != self {
-            print("========当前进行合并的上下文是否是主上下文: \(self.isContextOnMainThread)========")
+            print("========当前进行合并的上下文是否是主上下文: ========")
+            print(self.concurrencyType == .privateQueueConcurrencyType ? "privateQueueConcurrencyType" : "mainQueueConcurrencyType")
             print(notification)
             self.mergeChanges(fromContextDidSave: notification)
         } else {
@@ -48,7 +49,7 @@ class TDManagedObjectContext: NSManagedObjectContext {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
         print("\(self) deinit")
     }
 }

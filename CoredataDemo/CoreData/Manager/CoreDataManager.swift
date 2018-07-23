@@ -102,7 +102,7 @@ class CoreDataManager {
         let context = TDManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.persistentStoreCoordinator = self.persistentStoreCoordinator
         context.undoManager = nil
-        context.mergePolicy = NSErrorMergePolicy
+        context.mergePolicy = NSOverwriteMergePolicy
         return context
     }()
 
@@ -110,7 +110,7 @@ class CoreDataManager {
     func newPrivateContext() -> NSManagedObjectContext {
         let privateContext = TDManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         privateContext.persistentStoreCoordinator = self.persistentStoreCoordinator
-        privateContext.mergePolicy = NSErrorMergePolicy//NSOverwriteMergePolicy
+        privateContext.mergePolicy = NSOverwriteMergePolicy//NSOverwriteMergePolicy
         return privateContext
     }
 }

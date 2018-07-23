@@ -88,45 +88,56 @@ class ContactDetailVC: UIViewController {
             } else {
                 print("main context not found contact")
             }
+            
+            CoredataActions.saveOnMainThread()
 
             CoreDataManager.queue.async {
                 // 子线程上下文修改对象的firstname为yang
-                let datas = CoredataActions.currentContext().fetchObjects(entityName: "Contact")
-                if datas.count > 0 {
-                    let contact2 = datas[0]
-                    contact2.firstName = "yang"
-                } else {
-                    print("private context not found contact")
+//                let datas = CoredataActions.currentContext().fetchObjects(entityName: "Contact")
+//                if datas.count > 0 {
+//                    let contact2 = datas[0]
+//                    print(contact2.firstName)
+//
+//                    contact2.firstName = "private1"
+//                } else {
+//                    print("private context not found contact")
+//                }
+                for i in 0...10 {
+                    let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+                    object.firstName = "private1-\(i)"
+                    object.tel = "1"
+                    CoredataActions.insertObjectOnCurrentThread(object: object)
                 }
 
                 // 保存子线程上下文的变更
                 CoredataActions.saveOnCurrentThread()
+            }
+            
+            CoreDataManager.queue.async {
+//                let datas = CoredataActions.currentContext().fetchObjects(entityName: "Contact")
+//                if datas.count > 0 {
+//                    let contact2 = datas[0]
+//                    print(contact2.firstName)
+//                    contact2.firstName = "private2"
+//                } else {
+//                    print("private context not found contact")
+//                }
+                for i in 0...10 {
+                    let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+                    object.firstName = "private2-\(i)"
+                    object.tel = "2"
+                    CoredataActions.insertObjectOnCurrentThread(object: object)
+                }
 
-//                let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
-//                object.firstName = "insert1"
-//                object.tel = "123"
-//                CoredataActions.insertObjectOnCurrentThread(object: object)
-//                CoredataActions.saveOnCurrentThread()
+                // 保存子线程上下文的变更
+                CoredataActions.saveOnCurrentThread()
             }
 
             // 保存主线程上下文的变更
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
-//                let context = CoreDataManager.share.mainThreadContext
-//                let datas = context.fetchObjects(entityName: "Contact")
-//                print(datas[0].firstName ?? "not value")
-                CoredataActions.saveOnMainThread()
-            }
-        }
-
-//            let firstName = firstNameTextfield.text
-//
-//            CoreDataManager.queue.async {
-//                let object = CoredataActions.currentContext().object(with: (self.acontact?.objectID)!) as? ContactMO
-//                object?.firstName = firstName
-//                CoredataActions.saveOnCurrentThread()
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+//                CoredataActions.saveOnMainThread()
 //            }
-//        }
-
+        }
 
         self.dismiss(animated: true, completion: nil)
     }
