@@ -30,17 +30,17 @@ class RootViewController: UIViewController {
 
         self.view.addSubview(tableView)
 
-//        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
-//                                               object: nil,
-//                                               queue: nil) { (info) in
-//                                                print(Thread.current, Thread.isMainThread)
-//                                                DispatchQueue.main.async {
-//                                                    // 在主线程上下文查询对象
-//                                                    let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
-//                                                    self.data = datas
-//                                                    self.tableView.reloadData()
-//                                                }
-//        }
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
+                                               object: nil,
+                                               queue: nil) { (info) in
+                                                print(Thread.current, Thread.isMainThread)
+                                                DispatchQueue.main.async {
+                                                    // 在主线程上下文查询对象
+                                                    let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
+                                                    self.data = datas
+                                                    self.tableView.reloadData()
+                                                }
+        }
 
 //        let context = CoreDataManager.share.mainThreadContext
 //        let datas = context.fetchObjects(entityName: "Contact")

@@ -9,22 +9,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CoredataDemo/CoreData/Manager/CoredataActions.swift"
-            timestampString = "553775638.3846509"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "saveOnCurrentThread()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "CoredataDemo/CoreData/Manager/ .swift"
             timestampString = "553759807.725334"
             startingColumnNumber = "9223372036854775807"
@@ -42,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CoredataDemo/CoreData/Manager/CoredataActions.swift"
-            timestampString = "553775638.3852839"
+            timestampString = "554033824.744903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
             landmarkName = "saveOnCurrentThread()"
             landmarkType = "7">
          </BreakpointContent>
@@ -57,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CoredataDemo/CoreData/Manager/CoredataActions.swift"
-            timestampString = "553775638.3855439"
+            filePath = "CoredataDemo/Pages/ContactDetailVC.swift"
+            timestampString = "554034349.560358"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "currentContext()"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "finish(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

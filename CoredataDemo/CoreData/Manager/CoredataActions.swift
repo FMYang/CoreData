@@ -13,11 +13,6 @@ let kThreadNSManagedObjectContextKey = "kThreadNSManagedObjectContextKey"
 
 class CoredataActions {
 
-    static let share: CoredataActions = CoredataActions()
-    private init() {}
-
-    var contexts: [NSManagedObjectContext] = []
-
     // 获取当前上下文
     static func currentContext() -> NSManagedObjectContext {
         if Thread.isMainThread {
@@ -28,7 +23,6 @@ class CoredataActions {
             if threadContext == nil {
                 threadContext = CoreDataManager.share.newPrivateContext()
                 dic[kThreadNSManagedObjectContextKey] = threadContext
-                self.share.contexts.append(threadContext!)
             }
             return threadContext!
         }
@@ -75,6 +69,8 @@ class CoredataActions {
                     } else {
                         print("private thread save success!")
                     }
+                    let dic = Thread.current.threadDictionary
+                    dic.removeObject(forKey: kThreadNSManagedObjectContextKey)
                 } catch {
                     let err = error as NSError
                     print(err.userInfo)
