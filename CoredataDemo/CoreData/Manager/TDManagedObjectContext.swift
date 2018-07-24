@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 class TDManagedObjectContext: NSManagedObjectContext {
 
     var isContextOnMainThread = false
@@ -33,15 +32,15 @@ class TDManagedObjectContext: NSManagedObjectContext {
      合并其他上下文的改变到当前上下文
      */
     @objc func mergeChangesNotification(notification: Notification) {
+        print("~~~~~~~~~recevice notification on thread: \(Thread.current)，current Thread is mainThread: \(self.isContextOnMainThread)")
+
         if let saveContext = notification.object as? NSManagedObjectContext, saveContext != self {
-            print("========当前进行合并的上下文是否是主上下文: ========")
-            print(self.concurrencyType == .privateQueueConcurrencyType ? "privateQueueConcurrencyType" : "mainQueueConcurrencyType")
+            print("========当前进行合并的上下文是否主线程上下文: \(self.isContextOnMainThread)========")
             print(notification)
             self.mergeChanges(fromContextDidSave: notification)
         } else {
             print("======当前上下文和保存的上下文是同一个，不进行合并=====")
         }
-
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -49,7 +48,7 @@ class TDManagedObjectContext: NSManagedObjectContext {
     }
 
     deinit {
-//        NotificationCenter.default.removeObserver(self, name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
-        print("\(self) deinit")
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
+        print("\(self) deinit \(self.isContextOnMainThread)")
     }
 }

@@ -1,19 +1,22 @@
-////
-////  DBOperation.swift
-////  CoredataDemo
-////
-////  Created by yfm on 2018/7/18.
-////  Copyright © 2018年 yfm. All rights reserved.
-////
 //
-//import Foundation
-//import CoreData
+//  DBOperation.swift
+//  CoredataDemo
 //
-//class TaskOperation: Operation {
+//  Created by yfm on 2018/7/18.
+//  Copyright © 2018年 yfm. All rights reserved.
 //
-//    var taskBlock: ((NSManagedObjectContext) -> ())?
-//
-//    override func main() {
+
+import Foundation
+import CoreData
+
+class TaskOperation: Operation {
+
+    var taskBlock: (() -> ())?
+
+    override func main() {
+        if let block = taskBlock {
+            block()
+        }
 //        let privateContext = CoreDataManager.share.newPrivateContext()
 //        privateContext.perform() {
 //            if let block = self.taskBlock {
@@ -21,17 +24,9 @@
 //            }
 //            self.save(context: privateContext)
 //        }
-//    }
-//
-//    func save(context: NSManagedObjectContext) {
-//        if context.hasChanges {
-//            do {
-//                try context.save()
-//                try CoreDataManager.share.mainThreadContext.save()
-//            } catch {
-//                fatalError("private context save error!")
-//            }
-//        }
-//        context.reset()
-//    }
-//}
+    }
+
+    deinit {
+        print("\(self) operation deinit")
+    }
+}

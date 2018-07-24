@@ -68,7 +68,7 @@ class ContactDetailVC: UIViewController {
 
         switch atype {
         case .add:
-            CoreDataManager.queue.async {
+//            CoreDataManager.queue.async {
                 let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
                 object.firstName = firstName
                 object.lastName = lastName
@@ -76,69 +76,108 @@ class ContactDetailVC: UIViewController {
                 object.tel = tel
                 CoredataActions.insertObjectOnCurrentThread(object: object)
                 CoredataActions.saveOnCurrentThread()
-            }
+//            }
         case .edit:
 
-            // 主线程上下文修改对象为的firstname为liu
-            let context = CoreDataManager.share.mainThreadContext
-            let datas = context.fetchObjects(entityName: "Contact")
-            if datas.count > 0 {
-                let contact1 = datas[0]
-                contact1.firstName = "liu"
-            } else {
-                print("main context not found contact")
-            }
-            
-            CoredataActions.saveOnMainThread()
-
-            CoreDataManager.queue.async {
-                // 子线程上下文修改对象的firstname为yang
-//                let datas = CoredataActions.currentContext().fetchObjects(entityName: "Contact")
-//                if datas.count > 0 {
-//                    let contact2 = datas[0]
-//                    print(contact2.firstName)
-//
-//                    contact2.firstName = "private1"
-//                } else {
-//                    print("private context not found contact")
-//                }
-                for i in 0...10 {
-                    let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
-                    object.firstName = "private1-\(i)"
-                    object.tel = "1"
-                    CoredataActions.insertObjectOnCurrentThread(object: object)
-                }
-
-                // 保存子线程上下文的变更
-                CoredataActions.saveOnCurrentThread()
-            }
-            
-            CoreDataManager.queue.async {
-//                let datas = CoredataActions.currentContext().fetchObjects(entityName: "Contact")
-//                if datas.count > 0 {
-//                    let contact2 = datas[0]
-//                    print(contact2.firstName)
-//                    contact2.firstName = "private2"
-//                } else {
-//                    print("private context not found contact")
-//                }
-                for i in 0...10 {
-                    let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
-                    object.firstName = "private2-\(i)"
-                    object.tel = "2"
-                    CoredataActions.insertObjectOnCurrentThread(object: object)
-                }
-
-                // 保存子线程上下文的变更
-                CoredataActions.saveOnCurrentThread()
-            }
-
-            // 保存主线程上下文的变更
-//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
-//                CoredataActions.saveOnMainThread()
+//            let task1 = TaskOperation()
+//            task1.taskBlock = {
+//                print("=====task1: \(Thread.current)")
+//                let context = CoredataActions.currentContext()
+//                let object = context.fetchObjects(entityName: "Contact")[0]
+//                object.firstName = "private1"
+//                CoredataActions.saveOnCurrentThread()
 //            }
+//
+//            let task2 = TaskOperation()
+//            task2.taskBlock = {
+//                print("=====task2: \(Thread.current)")
+//                let context = CoredataActions.currentContext()
+//                let object = context.fetchObjects(entityName: "Contact")[0]
+//                object.firstName = "private2"
+//                CoredataActions.saveOnCurrentThread()
+//            }
+//
+//            task2.addDependency(task1)
+//
+//            CoreDataManager.share.taskQueue.addOperation(task1)
+//            CoreDataManager.share.taskQueue.addOperation(task2)
+
+            // 主线程上下文修改对象为的firstname为liu
+//            let context = CoreDataManager.share.mainThreadContext
+//            let datas = context.fetchObjects(entityName: "Contact")
+//            if datas.count > 0 {
+//                let contact1 = datas[0]
+//                contact1.firstName = "liu"
+//            } else {
+//                print("main context not found contact")
+//            }
+
+//            let task1 = TaskOperation()
+//            task1.taskBlock = {
+//                for i in 0...15 {
+//                    let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+//                    object.firstName = "private1-\(i)"
+//                    object.tel = "1"
+//                    object.createTime = self.currentTime()
+//                    CoredataActions.insertObjectOnCurrentThread(object: object)
+//                }
+//
+//                // 保存子线程上下文的变更
+//                CoredataActions.saveOnCurrentThread()
+//            }
+//
+//            let task2 = TaskOperation()
+//            task2.taskBlock = {
+//                for i in 0...10 {
+//                    let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+//                    object.firstName = "private2-\(i)"
+//                    object.tel = "2"
+//                    object.createTime = self.currentTime()
+//                    CoredataActions.insertObjectOnCurrentThread(object: object)
+//                }
+//
+//                // 保存子线程上下文的变更
+//                CoredataActions.saveOnCurrentThread()
+//            }
+//
+//            let task3 = TaskOperation()
+//            task3.taskBlock = {
+//                CoredataActions.currentContext().perform {
+//                    for i in 0...10 {
+//                        let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+//                        object.firstName = "private3-\(i)"
+//                        object.tel = "3"
+//                        object.createTime = self.currentTime()
+//                        CoredataActions.insertObjectOnCurrentThread(object: object)
+//                    }
+//                    CoredataActions.saveOnCurrentThread()
+//                }
+//            }
+//
+//            CoreDataManager.share.taskQueue.addOperation(task1)
+//            CoreDataManager.share.taskQueue.addOperation(task2)
+//            CoreDataManager.share.taskQueue.addOperation(task3)
+
+            let task = TaskOperation()
+            task.taskBlock = {
+                for i in 0...100 {
+                    let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+                    object.firstName = "private4-\(i)"
+                    object.tel = "4"
+                    object.createTime = self.currentTime()
+                    CoredataActions.insertObjectOnCurrentThread(object: object)
+                }
+                CoredataActions.saveOnCurrentThread()
+            }
+            CoreDataManager.share.taskQueue.addOperation(task)
         }
 
         self.dismiss(animated: true, completion: nil)
+    }
+
+    func currentTime() -> Int64 {
+        let time = Date()
+        let timeStamp = Int64(time.timeIntervalSince1970*1000)
+        return timeStamp
     }
 }

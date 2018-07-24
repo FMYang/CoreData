@@ -18,7 +18,6 @@ class CoredataActions {
         if Thread.isMainThread {
             return CoreDataManager.share.mainThreadContext
         } else {
-            print("获取当前上下文：\(Thread.current)")
             let dic = Thread.current.threadDictionary
             var threadContext = dic[kThreadNSManagedObjectContextKey] as? NSManagedObjectContext
             if threadContext == nil {
@@ -54,6 +53,7 @@ class CoredataActions {
     }
 
     static func insertObjectOnCurrentThread(object: NSManagedObject) {
+        print("insertObjectOnCurrentThread：\(Thread.current)")
         self.currentContext().insert(object)
     }
 
@@ -62,7 +62,7 @@ class CoredataActions {
     static func saveOnCurrentThread() {
         print("saveOnCurrentThread: \(Thread.current)")
         if self.currentContext().hasChanges {
-            self.currentContext().perform {
+            self.currentContext().performAndWait {
                 do {
                     try self.currentContext().save()
                     if Thread.isMainThread {

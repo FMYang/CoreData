@@ -14,7 +14,14 @@ class CoreDataManager {
     // MARK: - 单例
     static let share: CoreDataManager = CoreDataManager()
     static let queue: DispatchQueue = DispatchQueue(label: "CoreDataQueue")
+    lazy var taskQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.name = "db Operation"
+        queue.maxConcurrentOperationCount = 3
+        return queue
+    }()
     private init() {
+
         // 上下文调用save的时候触发NSManagedObjectContextObjectsDidChange这个通知
         // 合并其他线程上下文的改变到当前上下文
 //        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
@@ -110,7 +117,7 @@ class CoreDataManager {
     func newPrivateContext() -> NSManagedObjectContext {
         let privateContext = TDManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         privateContext.persistentStoreCoordinator = self.persistentStoreCoordinator
-        privateContext.mergePolicy = NSOverwriteMergePolicy//NSOverwriteMergePolicy
+        privateContext.mergePolicy = NSOverwriteMergePolicy
         return privateContext
     }
 }

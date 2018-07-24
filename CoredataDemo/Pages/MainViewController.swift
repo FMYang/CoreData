@@ -1,16 +1,31 @@
 //
-//  RootViewController.swift
+//  MainViewController.swift
 //  CoredataDemo
 //
-//  Created by yfm on 2018/7/10.
+//  Created by yfm on 2018/7/24.
 //  Copyright © 2018年 yfm. All rights reserved.
 //
 
 import UIKit
 import CoreData
-class RootViewController: UIViewController {
+
+class MainViewController: UIViewController {
 
     var data = [ContactMO]()
+
+    lazy var fetchedResultsController: NSFetchedResultsController<ContactMO> = {
+        let request = NSFetchRequest<ContactMO>(entityName: "Contact")
+        let sort = NSSortDescriptor(key: "createTime", ascending: true)
+        request.sortDescriptors = [sort]
+        let vc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataManager.share.mainThreadContext, sectionNameKeyPath: nil, cacheName: nil)
+        vc.delegate = self
+        do {
+            try vc.performFetch()
+        } catch {
+            fatalError("NSFetchedResultsController fetch error")
+        }
+        return vc
+    }()
 
     lazy var tableView: UITableView = {
         let view = UITableView()
@@ -38,47 +53,24 @@ class RootViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addContact))
 
         self.view.addSubview(tableView)
-
-//        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
-//                                               object: nil,
-//                                               queue: nil) { (info) in
-//                                                print(Thread.current, Thread.isMainThread)
-//                                                DispatchQueue.main.async {
-//                                                    // 在主线程上下文查询对象
-//                                                    let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
-//                                                    self.data = datas
-//                                                    self.tableView.reloadData()
-//                                                }
-//        }
+        // Do any additional setup after loading the view.
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tableView.reloadData()
 
-        let context = CoreDataManager.share.mainThreadContext
-//        let datas = context.fetchObjects(entityName: "Contact")
-        let reqest: NSFetchRequest = NSFetchRequest<ContactMO>(entityName: "Contact")
-        let sort = NSSortDescriptor(key: "createTime", ascending: true)
-        reqest.sortDescriptors = [sort]
-        do {
-            let datas = try context.fetch(reqest)
-            self.data = datas
-            self.tableView.reloadData()
-        } catch {
-
-        }
-//        context.deleteAll(entityName: "Contact")
+        self.data = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 
     @objc func delAll() {
         let context = CoreDataManager.share.mainThreadContext
         context.deleteAll(entityName: "Contact")
-        let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
-        self.data = datas
         self.tableView.reloadData()
     }
 
@@ -90,19 +82,16 @@ class RootViewController: UIViewController {
     }
 }
 
-extension RootViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact").count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let contact = data[indexPath.row]
-        cell.textLabel?.text = (contact.firstName ?? "") + (contact.lastName ?? "")
+
+        let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
+        cell.textLabel?.text = datas[indexPath.row].firstName ?? ""
         return cell
     }
 
@@ -111,5 +100,12 @@ extension RootViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = ContactDetailVC.init(contact: contact)
         vc.atype = .edit
         self.navigationController?.present(vc, animated: true, completion: nil)
+    }
+}
+
+extension MainViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+//        self.tableView.reloadData()
+        print("controllerDidChangeContent")
     }
 }
