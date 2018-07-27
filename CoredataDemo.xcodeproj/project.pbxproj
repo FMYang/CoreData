@@ -25,6 +25,10 @@
 		36AE74542106D79E005BBA4B /* ContactMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE74522106D79E005BBA4B /* ContactMO+CoreDataClass.swift */; };
 		36AE74552106D79E005BBA4B /* ContactMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE74532106D79E005BBA4B /* ContactMO+CoreDataProperties.swift */; };
 		36AE745D21070CDC005BBA4B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE745C21070CDC005BBA4B /* MainViewController.swift */; };
+		36AE745F210ABDA0005BBA4B /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE745E210ABDA0005BBA4B /* PageViewController.swift */; };
+		36AE7462210AC298005BBA4B /* News+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE7460210AC298005BBA4B /* News+CoreDataClass.swift */; };
+		36AE7463210AC298005BBA4B /* News+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE7461210AC298005BBA4B /* News+CoreDataProperties.swift */; };
+		36AE7465210AED1F005BBA4B /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE7464210AED1F005BBA4B /* NewsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +51,10 @@
 		36AE74522106D79E005BBA4B /* ContactMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		36AE74532106D79E005BBA4B /* ContactMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		36AE745C21070CDC005BBA4B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		36AE745E210ABDA0005BBA4B /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		36AE7460210AC298005BBA4B /* News+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "News+CoreDataClass.swift"; sourceTree = "<group>"; };
+		36AE7461210AC298005BBA4B /* News+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "News+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		36AE7464210AED1F005BBA4B /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +123,8 @@
 				363405C520F45F0200F19075 /* ContactDetailVC.swift */,
 				363405C620F45F0200F19075 /* ContactDetailVC.xib */,
 				36AE745C21070CDC005BBA4B /* MainViewController.swift */,
+				36AE745E210ABDA0005BBA4B /* PageViewController.swift */,
+				36AE7464210AED1F005BBA4B /* NewsViewController.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -124,6 +134,8 @@
 			children = (
 				36AE74522106D79E005BBA4B /* ContactMO+CoreDataClass.swift */,
 				36AE74532106D79E005BBA4B /* ContactMO+CoreDataProperties.swift */,
+				36AE7460210AC298005BBA4B /* News+CoreDataClass.swift */,
+				36AE7461210AC298005BBA4B /* News+CoreDataProperties.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -214,7 +226,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36AE7463210AC298005BBA4B /* News+CoreDataProperties.swift in Sources */,
 				367C64662105B2F600C81F92 /* TDManagedObjectContext.swift in Sources */,
+				36AE745F210ABDA0005BBA4B /* PageViewController.swift in Sources */,
+				36AE7462210AC298005BBA4B /* News+CoreDataClass.swift in Sources */,
 				36AE745D21070CDC005BBA4B /* MainViewController.swift in Sources */,
 				3634057620F359F100F19075 /* AppDelegate.swift in Sources */,
 				3682131620F6098500B508FA /* NSManagedObjectContext+Extend.swift in Sources */,
@@ -223,6 +238,7 @@
 				36AE74542106D79E005BBA4B /* ContactMO+CoreDataClass.swift in Sources */,
 				363405C720F45F0200F19075 /* ContactDetailVC.swift in Sources */,
 				363405C220F3666700F19075 /* CoreDataManager.swift in Sources */,
+				36AE7465210AED1F005BBA4B /* NewsViewController.swift in Sources */,
 				36AE74552106D79E005BBA4B /* ContactMO+CoreDataProperties.swift in Sources */,
 				367C645421002B9700C81F92 /* CoredataActions.swift in Sources */,
 				367C645220FF0F1300C81F92 /* TaskOperation.swift in Sources */,

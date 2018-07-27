@@ -7,7 +7,12 @@
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tel" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="News" representedClassName="News" syncable="YES">
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Contact" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="News" positionX="-63" positionY="18" width="128" height="75"/>
     </elements>
 </model>

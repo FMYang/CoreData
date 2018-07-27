@@ -14,16 +14,11 @@ class TaskOperation: Operation {
     var taskBlock: (() -> ())?
 
     override func main() {
-        if let block = taskBlock {
-            block()
+        CoredataActions.currentContext().performAndWait {
+            if let block = taskBlock {
+                block()
+            }
         }
-//        let privateContext = CoreDataManager.share.newPrivateContext()
-//        privateContext.perform() {
-//            if let block = self.taskBlock {
-//                block(privateContext)
-//            }
-//            self.save(context: privateContext)
-//        }
     }
 
     deinit {

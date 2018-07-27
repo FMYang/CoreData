@@ -55,19 +55,55 @@ class RootViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let context = CoreDataManager.share.mainThreadContext
-//        let datas = context.fetchObjects(entityName: "Contact")
-        let reqest: NSFetchRequest = NSFetchRequest<ContactMO>(entityName: "Contact")
-        let sort = NSSortDescriptor(key: "createTime", ascending: true)
-        reqest.sortDescriptors = [sort]
-        do {
-            let datas = try context.fetch(reqest)
-            self.data = datas
-            self.tableView.reloadData()
-        } catch {
-
-        }
+//        let context = CoreDataManager.share.mainThreadContext
+////        let datas = context.fetchObjects(entityName: "Contact")
+//        let reqest: NSFetchRequest = NSFetchRequest<ContactMO>(entityName: "Contact")
+//        let sort = NSSortDescriptor(key: "createTime", ascending: true)
+//        reqest.sortDescriptors = [sort]
+//        do {
+//            let datas = try context.fetch(reqest)
+//            self.data = datas
+//            self.tableView.reloadData()
+//        } catch {
+//
+//        }
 //        context.deleteAll(entityName: "Contact")
+
+//        let checkTask = TaskOperation()
+//        checkTask.taskBlock = {
+//            let datas: [ContactMO] = CoredataActions.fetchObjectsOnCurrentThread(entityName: "Contact")
+//            OperationQueue.main.addOperation({
+//                for data in datas {
+//                    do {
+//                        let object: ContactMO = try CoredataActions.currentContext().existingObject(with: data.objectID) as! ContactMO
+//                        print(object.firstName)
+//                    } catch {
+//                        print("object not found")
+//                    }
+//                }
+//                self.data = datas
+//                print(datas[90].firstName)
+//                self.tableView.reloadData()
+//            })
+//        }
+//        CoreDataManager.share.taskQueue.addOperation(checkTask)
+
+        DispatchQueue.global().async {
+            let datas: [ContactMO] = CoredataActions.findAllOnCurrentThread(entityName: "Contact")
+            // 避免跨线程访问，NSManagedObject不是线程安全的，objectID是线程安全的，通过objectID跨线程访问对象
+            DispatchQueue.main.async {
+//                self.data = datas // 不正确的使用
+                let newDatas: [ContactMO] = datas.map() { data -> ContactMO in
+                    do {
+                        return try CoredataActions.currentContext().existingObject(with: data.objectID) as! ContactMO
+                    } catch {
+                        fatalError("object not found")
+                    }
+                }
+                self.data = newDatas // 正确的使用
+                self.tableView.reloadData()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,10 +111,11 @@ class RootViewController: UIViewController {
     }
 
     @objc func delAll() {
-        let context = CoreDataManager.share.mainThreadContext
-        context.deleteAll(entityName: "Contact")
-        let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
-        self.data = datas
+//        let context = CoreDataManager.share.mainThreadContext
+//        context.deleteAll(entityName: "Contact")
+//        let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
+        CoredataActions.deleteAllOnCurrentThread(entityName: "Contact")
+        self.data = []
         self.tableView.reloadData()
     }
 

@@ -69,14 +69,22 @@ class ContactDetailVC: UIViewController {
         switch atype {
         case .add:
 //            CoreDataManager.queue.async {
-                let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+                let object: ContactMO = CoredataActions.insertOnCurrentThread()
                 object.firstName = firstName
                 object.lastName = lastName
                 object.company = company
                 object.tel = tel
-                CoredataActions.insertObjectOnCurrentThread(object: object)
                 CoredataActions.saveOnCurrentThread()
 //            }
+
+            CoredataActions.saveWithBlock {
+                let object: ContactMO = CoredataActions.insertOnCurrentThread()
+                object.firstName = firstName
+                object.lastName = lastName
+                object.company = company
+                object.tel = tel
+                CoredataActions.saveOnCurrentThread()
+            }
         case .edit:
 
 //            let task1 = TaskOperation()
@@ -161,11 +169,10 @@ class ContactDetailVC: UIViewController {
             let task = TaskOperation()
             task.taskBlock = {
                 for i in 0...100 {
-                    let object: ContactMO = CoredataActions.createObjectOnCurrentThread()
+                    let object: ContactMO = CoredataActions.insertOnCurrentThread()
                     object.firstName = "private4-\(i)"
                     object.tel = "4"
                     object.createTime = self.currentTime()
-                    CoredataActions.insertObjectOnCurrentThread(object: object)
                 }
                 CoredataActions.saveOnCurrentThread()
             }

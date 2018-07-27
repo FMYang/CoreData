@@ -60,7 +60,7 @@ class MainViewController: UIViewController {
         super.viewWillAppear(animated)
         self.tableView.reloadData()
 
-        self.data = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
+//        self.data = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
     }
 
     override func didReceiveMemoryWarning() {
@@ -70,7 +70,13 @@ class MainViewController: UIViewController {
 
     @objc func delAll() {
         let context = CoreDataManager.share.mainThreadContext
-        context.deleteAll(entityName: "Contact")
+//        context.deleteAll(entityName: "Contact")
+//        NSFetchedResultsController<ContactMO>.deleteCache(withName: "")
+        self.fetchedResultsController.fetchRequest.predicate = NSPredicate(value: false)
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch {}
+
         self.tableView.reloadData()
     }
 
@@ -84,13 +90,13 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact").count
+        return self.fetchedResultsController.fetchedObjects?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
-        let datas = CoreDataManager.share.mainThreadContext.fetchObjects(entityName: "Contact")
+        guard let datas = self.fetchedResultsController.fetchedObjects else { return cell }
         cell.textLabel?.text = datas[indexPath.row].firstName ?? ""
         return cell
     }
@@ -107,5 +113,6 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 //        self.tableView.reloadData()
         print("controllerDidChangeContent")
+        self.tableView.reloadData()
     }
 }
